@@ -25,7 +25,7 @@ const fmtN=n=>new Intl.NumberFormat('nb-NO').format(Math.round(n)); const fmtKr=
 const parseDate=s=>{const [d,m,y]=s.split('.').map(Number);return new Date(Date.UTC(y,m-1,d));};
 const ticketValue=r=>r.tickets;
 const cumulativeTickets=r=>r.cumTickets;
-function venueKey(v){const s=(v||'').toLowerCase();if(s.includes('stangholmen'))return 'stang';if(s.includes('risørhuset')||s.includes('inger johanne'))return 'rh';if(s.includes('kirke'))return 'kirka';return 'other'}
+function venueKey(v){const s=(v||'').toLowerCase();if(s.includes('stangholmen'))return 'stang';if(s.includes('risørhuset')||s.includes('inger johanne'))return 'rh';if(s.includes('risør kirke'))return 'kirka';return 'other'}
 function eventRowsForCount(year){const start=Date.parse(START[year]+'T12:00:00Z'),end=Date.parse(END[year]+'T12:00:00Z'),seen=new Set();return EVENTS[year].filter(e=>{const day=Date.parse(e.date.split('.').reverse().join('-')+'T12:00:00Z'),name=e.name.toLowerCase(),key=[e.date,e.name,e.venue].join('|');if(day<start||day>end||/test|plassreservasjon|generalprøve/.test(name)||seen.has(key))return false;seen.add(key);return true})}
 const CONCERT_COUNTS=Object.fromEntries(Object.keys(DATA).map(year=>{const rows=eventRowsForCount(year);const counts={total:rows.length,stang:0,rh:0,kirka:0};for(const e of rows){const key=venueKey(e.venue);if(key in counts)counts[key]++;}return [year,counts]}));
 const CONCERT_COUNT_OVERRIDES={2025:{total:28,kirka:12}};
